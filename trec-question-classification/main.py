@@ -1,3 +1,6 @@
+from sklearn.feature_extraction.text import CountVectorizer
+
+
 def _generate_examples(filepath):
     examples = []
     with open(filepath, "rb") as f:
@@ -40,3 +43,14 @@ if __name__ == "__main__":
     id2label = {i: x for i, x in enumerate(set_labels)}
     print("------")
     print("label2id", id2label)
+
+    train_target = [label2id[x['label-coarse']] for _, x in train]
+    train_data = [x['text'] for _, x in train]
+
+    print("=" * 50)
+    print(train_target)
+    print("=" * 50)
+    print(train_data)
+
+    # count_vect = CountVectorizer(ngram_range=(1, 1))
+    # X_train_counts = count_vect.fit_transform(train_data)
