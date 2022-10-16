@@ -10,6 +10,31 @@ import math
 first_sentence = "Data Science is the sexiest job of the 21st century"
 second_sentence = "machine learning is the key for data science"
 
+
+def computeTF(wordDict, doc):
+    tfDict = {}
+    corpusCount = len(doc)
+    for word, count in wordDict.items():
+        tfDict[word] = count / float(corpusCount)
+    return (tfDict)
+
+
+def computeIDF(docList):
+    N = len(docList)
+
+    idfDict = dict.fromkeys(docList[0].keys(), 0)
+    for word, val in idfDict.items():
+        idfDict[word] = math.log10(N / (float(val) + 1))
+    return (idfDict)
+
+
+def computeTFIDF(tfBow, idfs):
+    tfidf = {}
+    for word, val in tfBow.items():
+        tfidf[word] = val * idfs[word]
+    return (tfidf)
+
+
 if __name__ == "__main__":
     first_sentence = first_sentence.split(" ")
     second_sentence = second_sentence.split(" ")
@@ -27,12 +52,10 @@ if __name__ == "__main__":
     for word in second_sentence:
         wordDictB[word] += 1
 
-    print("=" * 50)
-    print(wordDictA)
-    print("=" * 50)
-    print(wordDictB)
+    tfFirst = computeTF(wordDictA, first_sentence)
+    tfSecond = computeTF(wordDictB, second_sentence)
 
-    df = pd.DataFrame([wordDictA, wordDictB])
-    pd.set_option('display.max_columns', None)
-    display(df)
-    print(1 / 16)
+    idfs = computeIDF([wordDictA, wordDictB])
+
+    idfFirst = computeTFIDF(tfFirst, idfs)
+    idfSecond = computeTFIDF(tfSecond, idfs)
