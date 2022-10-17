@@ -1,4 +1,5 @@
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
 
 
 def _generate_examples(filepath):
@@ -19,9 +20,9 @@ def _generate_examples(filepath):
 
 if __name__ == "__main__":
     train = _generate_examples(
-        "/Users/sendo_mac/Documents/avp/Text-Mining/trec-question-classification/data/train_5500.label")
+        "/Users/anhvietpham/Documents/cs/text-mining/trec-question-classification/data/train_5500.label")
     test = _generate_examples(
-        "/Users/sendo_mac/Documents/avp/Text-Mining/trec-question-classification/data/TREC_10.label")
+        "/Users/anhvietpham/Documents/cs/text-mining/trec-question-classification/data/TREC_10.label")
     print(len(train))
     print(train[0])
 
@@ -42,15 +43,18 @@ if __name__ == "__main__":
 
     id2label = {i: x for i, x in enumerate(set_labels)}
     print("------")
-    print("label2id", id2label)
+    print("id2label", id2label)
 
     train_target = [label2id[x['label-coarse']] for _, x in train]
     train_data = [x['text'] for _, x in train]
 
     print("=" * 50)
-    print(train_target)
-    print("=" * 50)
-    print(train_data)
+    print(train_data[0], train_target[0])
+    print(train_data[1], train_target[1])
 
-    # count_vect = CountVectorizer(ngram_range=(1, 1))
-    # X_train_counts = count_vect.fit_transform(train_data)
+    count_vect = CountVectorizer(ngram_range=(1, 1))
+    X_train_counts = count_vect.fit_transform(train_data)
+
+    print("=" * 50)
+    print(X_train_counts.shape)
+    print(X_train_counts.toarray())
