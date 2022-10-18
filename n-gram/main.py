@@ -1,110 +1,93 @@
-import string
-import random
-import nltk
+import re
+from urllib.request import urlopen
+import sets
 
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('reuters')
-from nltk.corpus import reuters
-from nltk.corpus import stopwords
-from nltk.util import ngrams
-from nltk import FreqDist
+url_template = 'https://www.gutenberg.org/cache/epub/%s/pg%s.txt'
+
+books = {'Pride and Prejudice': '1342',
+         'Huckleberry Fin': '76',
+         'Sherlock Holmes': '1661'}
+
+book = books['Pride and Prejudice']
 
 
-def remove_stopwords(x):
-    y = []
-    for pair in x:
-        count = 0
-        for word in pair:
-            if word in removal_list:
-                count = count or 0
-            else:
-                count = count or 1
-        if (count == 1):
-            y.append(pair)
-    return (y)
+def get2GramSentence(word, n_gram, n=50):
+    for i in range(n):
+        print(word, end=" ")
+        word = next((element[0][1] for element in n_gram if element[0][0] == word), None)
+        if not word:
+            break
 
 
 if __name__ == "__main__":
-    sents = reuters.sents()
-    print("Sents ==> reuters.sents()")
-    print(sents)
-    print("=" * 50)
-    print("=" * 50)
-    print("Stop word ==> stopwords.words('english')")
-    stop_words = set(stopwords.words('english'))
-    print(stop_words)
-    print("=" * 50)
-    print("=" * 50)
-    print("String punctuation ==> string.punctuation")
-    string.punctuation = string.punctuation + '"' + '"' + '-' + '''+''' + '—'
-    print(string.punctuation)
-    removal_list = list(stop_words) + list(string.punctuation) + ['lt', 'rt']
-    print("=" * 50)
-    print("=" * 50)
-    print("Removal List ==> removal_list")
-    print(removal_list)
-    print("=" * 50)
-    print("=" * 50)
-    unigram = []
-    bigram = []
-    trigram = []
-    tokenized_text = []
-    for sentence in sents:
-        sentence = list(map(lambda x: x.lower(), sentence))
-        for word in sentence:
-            if word == '.':
-                sentence.remove(word)
-            else:
-                unigram.append(word)
-        tokenized_text.append(sentence)
-        bigram.extend(list(ngrams(sentence, 2, pad_left=True, pad_right=True)))
-        trigram.extend(list(ngrams(sentence, 3, pad_left=True, pad_right=True)))
+    url = "https://www.gutenberg.org/files/1342/1342-0.txt"
+    with urlopen(url) as file:
+        content = file.read().decode()
+    print(f'Length: {len(content)}, content: {content[:50]}')
 
     print("=" * 50)
-    print("=" * 50)
-    print("Tokenized Text ==> tokenized_text")
-    print(len(tokenized_text))
+
+    words = re.split('[^A-za-z]+', content.lower())
+
+    print(words[:50])
 
     print("=" * 50)
-    print("=" * 50)
-    print("Unigram ==> unigram")
-    print(len(unigram))
+    gram1 = set(words)
+    print(f'Length Gram 1: {len(gram1)}')
+    print(gram1)
+    gram1_iter = iter(gram1)
+    print([gram1_iter.__next__() for i in range(20)])
 
     print("=" * 50)
-    print("=" * 50)
-    print("Bigram ==> bigram")
-    print(len(bigram))
+    for i in range(len(words) - 10, len(words) - 1):
+        print(f'{words[i]} {words[i + 1]}')
 
     print("=" * 50)
-    print("=" * 50)
-    print("Trigram ==> trigram")
-    print(len(trigram))
+    word_pairs = [(words[i], words[i + 1]) for i in range(len(words) - 1)]
+    print(word_pairs[:50])
 
     print("=" * 50)
-    print("=" * 50)
-    unigram = remove_stopwords(unigram)
-    bigram = remove_stopwords(bigram)
-    trigram = remove_stopwords(trigram)
+    gram2 = set(word_pairs)
+    print(f"Length word pairs: {len(word_pairs)}")
+    print(f"Length gram2: {len(gram2)}")
+    gram2_iter = iter(gram2)
+    print([gram2_iter.__next__() for i in range(20)])
 
     print("=" * 50)
-    print("=" * 50)
-    print("After remove stopword")
+    print("=" * 20 + "Frequency" + "=" * 20)
 
-    print("=" * 50)
-    print("=" * 50)
-    print("Unigram ==> unigram")
-    print(len(unigram))
+    # Populate 1-gram dictionary
+    gram_frequency_1 = dict()
 
-    print("=" * 50)
-    print("=" * 50)
-    print("Bigram ==> bigram")
-    print(len(bigram))
+    for word in words:
+        if word in gram_frequency_1.keys():
+            gram_frequency_1[word] += 1
+        else:
+            gram_frequency_1[word] = 1
 
+    gram_frequency_1 = sorted(gram_frequency_1.items(), key=lambda item: -item[1])
+    print(gram_frequency_1[:20])
+
+    # Populate 2-gram dictionary
     print("=" * 50)
+    gram_frequency_2 = dict()
+
+    for i in range(len(words) - 1):
+        key = (words[i], words[i + 1])
+        if key in gram_frequency_2.keys():
+            gram_frequency_2[key] += 1
+        else:
+            gram_frequency_2[key] = 1
+
+    gram_frequency_2 = sorted(gram_frequency_2.items(), key=lambda item: -item[1])
+    print(gram_frequency_2[:20])
+
+    # Prediction
     print("=" * 50)
-    print("Trigram ==> trigram")
-    print(len(trigram))
+    start_word = words[int(len(words) / 4)]
+    print(start_word)
+    word = start_word
+    print(f'Start word: {start_word}')
 
-
-
+    print('2 gram sentence:')
+    get2GramSentence(start_word, gram_frequency_2, 20)
