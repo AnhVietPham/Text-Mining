@@ -1,6 +1,5 @@
 import re
 from urllib.request import urlopen
-import sets
 
 url_template = 'https://www.gutenberg.org/cache/epub/%s/pg%s.txt'
 
@@ -14,7 +13,14 @@ book = books['Pride and Prejudice']
 def get2GramSentence(word, n_gram, n=50):
     for i in range(n):
         print(word, end=" ")
-        word = next((element[0][1] for element in n_gram if element[0][0] == word), None)
+        # for element in n_gram:
+        #     if element[0][0] == word:
+        # next(element[0][1], None)
+        for index, element in enumerate(n_gram):
+            if element[0][0] == word:
+                word = element[0][1]
+                break
+        # word = next(element[0][1] for element in n_gram if element[0][0] == word)
         if not word:
             break
 
@@ -90,4 +96,12 @@ if __name__ == "__main__":
     print(f'Start word: {start_word}')
 
     print('2 gram sentence:')
-    get2GramSentence(start_word, gram_frequency_2, 20)
+    get2GramSentence(start_word, gram_frequency_2, 15)
+
+    print()
+    print("=" * 50)
+    for i in ['and', 'he', 'she', 'when', 'join', 'never', 'i', 'how']:
+        print()
+        print(f'Start word: {i}')
+        print("2 gram sentence:")
+        get2GramSentence(i, gram_frequency_2, 15)
