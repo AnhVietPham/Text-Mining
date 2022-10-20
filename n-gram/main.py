@@ -1,5 +1,6 @@
 import re
 from urllib.request import urlopen
+import random
 
 url_template = 'https://www.gutenberg.org/cache/epub/%s/pg%s.txt'
 
@@ -23,6 +24,25 @@ def get2GramSentence(word, n_gram, n=50):
         # word = next(element[0][1] for element in n_gram if element[0][0] == word)
         if not word:
             break
+
+
+def weight_choice(choices):
+    total = sum(w for c, w in choices)
+    r = random.uniform(0, total)
+    upto = 0
+    for c, w in choices:
+        if upto + w > r:
+            return c
+        upto += w
+
+
+def get2GramSentenceRandom(word, n_gram, n=50):
+    for i in range(n):
+        print(word, end=" ")
+        choices = [element for element in n_gram if element[0][0] == word]
+        if not choices:
+            break
+        word = weight_choice(choices)[1]
 
 
 if __name__ == "__main__":
@@ -105,3 +125,13 @@ if __name__ == "__main__":
         print(f'Start word: {i}')
         print("2 gram sentence:")
         get2GramSentence(i, gram_frequency_2, 15)
+
+    print()
+    print("=" * 50)
+    for i in ['and', 'he', 'she', 'when', 'join', 'never', 'i', 'how']:
+        print()
+        print(f'Start word: {i}')
+        print("2 gram sentence:")
+        get2GramSentenceRandom(i, gram_frequency_2, 15)
+
+
