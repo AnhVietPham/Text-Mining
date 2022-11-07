@@ -4,6 +4,11 @@ import argparse
 from data_loader import load_and_cache_examples
 from trainer import Trainer
 from utils import MODEL_CLASSES, MODEL_PATH_MAP, init_logger, load_tokenizer, set_seed
+from model import ViHnBERT
+
+"""
+https://dacon.io/en/codeshare/4520
+"""
 
 
 def main(args):
@@ -23,20 +28,19 @@ def main(args):
     if args.do_eval:
         trainer.load_model()
         trainer.evaluate("dev")
-        trainer.evaluate("test")
-
+        # trainer.evaluate("test")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_dir",
-                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/model-save",
+                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save",
                         type=str, help="Path to save, load model")
     parser.add_argument("--data_dir",
-                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
+                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
                         type=str, help="The input data dir")
     parser.add_argument("--slot_label_file",
-                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
+                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
                         type=str, help="Slot Label file")
 
     parser.add_argument(
@@ -48,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("--tuning_metric", default="loss", type=str, help="Metrics to tune when training")
     parser.add_argument("--seed", type=int, default=1, help="random seed for initialization")
     parser.add_argument("--train_batch_size", default=16, type=int, help="Batch size for training.")
-    parser.add_argument("--eval_batch_size", default=16, type=int, help="Batch size for evaluation.")
+    parser.add_argument("--eval_batch_size", default=1, type=int, help="Batch size for evaluation.")
     parser.add_argument(
         "--max_seq_len", default=70, type=int, help="The maximum total input sequence length after tokenization."
     )

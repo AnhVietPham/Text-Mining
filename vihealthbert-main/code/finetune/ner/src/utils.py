@@ -4,7 +4,7 @@ import random
 
 import numpy as np
 import torch
-from model import phoBERT, ViHnBERT
+from model import ViHnBERT
 from seqeval.metrics import f1_score, precision_score, recall_score, classification_report
 from transformers import (
     AutoTokenizer,
@@ -13,12 +13,12 @@ from transformers import (
 
 MODEL_CLASSES = {
     "vihnbert": (RobertaConfig, ViHnBERT, AutoTokenizer),
-    "phobert": (RobertaConfig, phoBERT, AutoTokenizer)
+    # "phobert": (RobertaConfig, phoBERT, AutoTokenizer)
 }
 
 MODEL_PATH_MAP = {
     "vihnbert": "demdecuong/vihealthbert-base-word",
-    "phobert": "vinai/phobert-base"
+    # "phobert": "vinai/phobert-base"
 }
 
 def get_slot_labels(args):

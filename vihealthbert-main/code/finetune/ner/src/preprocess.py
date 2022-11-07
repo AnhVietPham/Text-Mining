@@ -32,28 +32,28 @@ def read_conll(path):
 
 
 test_src, test_trg = read_conll(
-    '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/test_word.conll')
+    '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/test_word.conll')
 dev_src, dev_trg = read_conll(
-    '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/dev_word.conll')
+    '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/dev_word.conll')
 tr_src, tr_trg = read_conll(
-    '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/train_word.conll')
+    '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/train_word.conll')
 
 write_txt(test_src,
-          '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/test/seq.in')
+          '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/test/seq.in')
 write_txt(test_trg,
-          '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/test/seq.out')
+          '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/test/seq.out')
 write_txt(dev_src,
-          '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/dev/seq.in')
+          '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/dev/seq.in')
 write_txt(dev_trg,
-          '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/dev/seq.out')
+          '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/dev/seq.out')
 write_txt(tr_src,
-          '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/train/seq.in')
+          '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/train/seq.in')
 write_txt(tr_trg,
-          '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/train/seq.out')
+          '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/train/seq.out')
 
 a = ['O', 'B-DATE', 'I-DATE', 'B-NAME', 'B-AGE', 'B-LOCATION', 'I-LOCATION', 'B-JOB', 'I-JOB', 'B-ORGANIZATION',
      'I-ORGANIZATION', 'B-PATIENT_ID',
      'B-SYMPTOM_AND_DISEASE', 'I-SYMPTOM_AND_DISEASE', 'B-GENDER', 'B-TRANSPORTATION', 'I-TRANSPORTATION', 'I-NAME',
      'I-PATIENT_ID', 'I-AGE', 'I-GENDER']
 write_txt(a,
-          '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt')
+          '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt')
