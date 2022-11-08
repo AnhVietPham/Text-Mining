@@ -4,7 +4,6 @@ import argparse
 from data_loader import load_and_cache_examples
 from trainer import Trainer
 from utils import MODEL_CLASSES, MODEL_PATH_MAP, init_logger, load_tokenizer, set_seed
-from model import ViHnBERT
 
 """
 https://dacon.io/en/codeshare/4520
@@ -41,13 +40,13 @@ if __name__ == "__main__":
     #                     default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/model-save",
     #                     type=str, help="Path to save, load model")
     parser.add_argument("--model_dir",
-                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save",
+                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/model-save",
                         type=str, help="Path to save, load model")
     parser.add_argument("--data_dir",
-                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
+                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
                         type=str, help="The input data dir")
     parser.add_argument("--slot_label_file",
-                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
+                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
                         type=str, help="Slot Label file")
 
     parser.add_argument(

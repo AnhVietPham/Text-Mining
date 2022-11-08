@@ -1,7 +1,7 @@
 import torch.nn as nn
 from pytorchcrf import CRF
 from transformers.models.roberta.modeling_roberta import RobertaPreTrainedModel, RobertaModel
-
+import numpy as np
 from .module import SlotClassifier
 
 
@@ -39,7 +39,7 @@ class ViHnBERT(RobertaPreTrainedModel):
                 slot_loss = self.crf(slot_logits, slot_labels_ids, mask=attention_mask.byte(), reduction="mean")
                 slot_loss = -1 * slot_loss  # negative log-likelihood
             else:
-                slot_loss_fct = nn.CrossEntropyLoss(ignore_index=self.args.ignore_index)
+                slot_loss_fct = nn.CrossEntropyLoss()
                 # Only keep active parts of the loss
                 if attention_mask is not None:
                     active_loss = attention_mask.view(-1) == 1
