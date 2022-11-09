@@ -36,17 +36,14 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    # parser.add_argument("--model_dir",
-    #                     default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/model-save",
-    #                     type=str, help="Path to save, load model")
     parser.add_argument("--model_dir",
-                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/model-save",
+                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save",
                         type=str, help="Path to save, load model")
     parser.add_argument("--data_dir",
-                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
+                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
                         type=str, help="The input data dir")
     parser.add_argument("--slot_label_file",
-                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
+                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
                         type=str, help="Slot Label file")
 
     parser.add_argument(
@@ -57,7 +54,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--tuning_metric", default="loss", type=str, help="Metrics to tune when training")
     parser.add_argument("--seed", type=int, default=1, help="random seed for initialization")
-    parser.add_argument("--train_batch_size", default=16, type=int, help="Batch size for training.")
+    parser.add_argument("--train_batch_size", default=1, type=int, help="Batch size for training.")
     parser.add_argument("--eval_batch_size", default=1, type=int, help="Batch size for evaluation.")
     parser.add_argument(
         "--max_seq_len", default=70, type=int, help="The maximum total input sequence length after tokenization."
@@ -87,7 +84,7 @@ if __name__ == "__main__":
     parser.add_argument("--logging_steps", type=int, default=200, help="Log every X updates steps.")
     parser.add_argument("--save_steps", type=int, default=200, help="Save checkpoint every X updates steps.")
 
-    parser.add_argument("--do_train", action="store_true", default=False, help="Whether to run training.")
+    parser.add_argument("--do_train", action="store_true", default=True, help="Whether to run training.")
     parser.add_argument("--do_eval", action="store_true", default=True, help="Whether to run eval on the test set.")
 
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
