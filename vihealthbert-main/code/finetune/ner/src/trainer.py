@@ -253,25 +253,6 @@ class Trainer(object):
             self.write_evaluation_result("eval_dev_results.txt", results)
         return results
 
-    # def predict(self, mode):
-    #     # Eval!
-    #     logger.info("***** Running Predict on %s dataset *****", mode)
-    #     eval_loss = 0.0
-    #     nb_eval_steps = 0
-    #
-    #     slot_preds = None
-    #     out_slot_labels_ids = None
-    #
-    #     with torch.no_grad():
-    #         inputs = {
-    #             "input_ids": batch[0],
-    #             "attention_mask": batch[1],
-    #             "slot_labels_ids": batch[3],
-    #         }
-    #         if self.args.model_type != "distilbert":
-    #             inputs["token_type_ids"] = batch[2]
-    #         outputs = self.model(**inputs)
-
     def save_model(self):
         # Save model checkpoint (Overwrite)
         if not os.path.exists(self.args.model_dir):

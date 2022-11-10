@@ -29,10 +29,6 @@ def main(args):
         trainer.evaluate("dev")
         # trainer.evaluate("test")
 
-    if args.do_pre:
-        trainer.load_model()
-
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -84,7 +80,7 @@ if __name__ == "__main__":
     parser.add_argument("--logging_steps", type=int, default=200, help="Log every X updates steps.")
     parser.add_argument("--save_steps", type=int, default=200, help="Save checkpoint every X updates steps.")
 
-    parser.add_argument("--do_train", action="store_true", default=True, help="Whether to run training.")
+    parser.add_argument("--do_train", action="store_true", default=False, help="Whether to run training.")
     parser.add_argument("--do_eval", action="store_true", default=True, help="Whether to run eval on the test set.")
 
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
