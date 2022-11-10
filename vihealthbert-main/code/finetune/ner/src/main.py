@@ -33,13 +33,13 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_dir",
-                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save",
+                        default="/Users/mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save",
                         type=str, help="Path to save, load model")
     parser.add_argument("--data_dir",
-                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
+                        default="/Users/mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word",
                         type=str, help="The input data dir")
     parser.add_argument("--slot_label_file",
-                        default="/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
+                        default="/Users/mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/vinai_covid_word/slot_labels.txt",
                         type=str, help="Slot Label file")
 
     parser.add_argument(

@@ -5,7 +5,7 @@ import copy
 import json
 import argparse
 
-rdrsegmenter = VnCoreNLP("/Users/sendo_mac/Documents/avp/Text-Mining/vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg",
+rdrsegmenter = VnCoreNLP("/Users/mac/Documents/avp/Text-Mining/vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg",
                          max_heap_size='-Xmx500m')
 
 vihealthbert = AutoModel.from_pretrained("demdecuong/vihealthbert-base-word")
@@ -273,7 +273,7 @@ if __name__ == "__main__":
     config = RobertaConfig.from_pretrained('demdecuong/vihealthbert-base-word', finetuning_task='')
 
     model = ViHnBERT.from_pretrained(
-        '/Users/sendo_mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save',
+        '/Users/mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save',
         config=config,
         args=args,
         slot_label_lst=labels,
