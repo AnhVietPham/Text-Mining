@@ -4,13 +4,6 @@ from vncorenlp import VnCoreNLP
 import copy
 import json
 import argparse
-
-rdrsegmenter = VnCoreNLP("/Users/mac/Documents/avp/Text-Mining/vncorenlp/VnCoreNLP-1.1.1.jar", annotators="wseg",
-                         max_heap_size='-Xmx500m')
-
-vihealthbert = AutoModel.from_pretrained("demdecuong/vihealthbert-base-word")
-pretrain_tokenizer = AutoTokenizer.from_pretrained("demdecuong/vihealthbert-base-word")
-
 import torch.nn as nn
 from pytorchcrf import CRF
 from transformers.models.roberta.modeling_roberta import RobertaPreTrainedModel, RobertaModel
@@ -242,26 +235,49 @@ def _create_examples(texts, label):
 
 
 if __name__ == "__main__":
+
+    """
+    Labels
+    """
     labels = ["O", "B-DATE", "I-DATE", "B-NAME", "B-AGE", "B-LOCATION", "I-LOCATION", "B-JOB", "I-JOB",
               "B-ORGANIZATION", "I-ORGANIZATION", "B-PATIENT_ID", "B-SYMPTOM_AND_DISEASE", "I-SYMPTOM_AND_DISEASE",
               "B-GENDER", "B-TRANSPORTATION", "I-TRANSPORTATION", "I-NAME", "I-PATIENT_ID", "I-AGE", "I-GENDER"]
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--use_crf", action="store_true", help="Whether to use CRF")
-    parser.add_argument("--dropout_rate", default=0.1, type=float, help="Dropout for fully-connected layers")
-    args = parser.parse_args()
     # Input
-    text = "Bác sĩ Trần Thanh Linh, từ Bệnh viện Chợ Rẫy chi viện phụ trách đơn nguyên hồi sức tích cực, cho biết \"bệnh_nhân 416\" vẫn đang duy trì ECMO, thở máy, hiện xơ phổi rất nhiều."
-    # To perform word (and sentence) segmentation
+    text = "Trong thời gian ở đây, em đi chơi công viên SunWorld Đà Nẵng, siêu thị Lotte Mart và ăn ở một số quán."
+    max_seq_len = 70
+
+    """
+    Step 1: 
+        To perform word (and sentence) segmentation with VnCoreNLP
+        https://huggingface.co/demdecuong/vihealthbert-base-word#example-usage-for-raw-text-
+    """
+    rdrsegmenter = VnCoreNLP("/Users/anhvietpham/Documents/cs/text-mining/vncorenlp/VnCoreNLP-1.1.1.jar",
+                             annotators="wseg",
+                             max_heap_size='-Xmx500m')
     sentences = rdrsegmenter.tokenize(text)
     input_text = ""
     for sentence in sentences:
         input_text = " ".join(sentence)
-    example = _create_examples("Trong thời_gian ở đây , em đi chơi công_viên SunWorld Đà_Nẵng , siêu_thị Lotte_Mart và ăn_ở một_số quán .", labels)
-    feature = convert_examples_to_features(example, max_seq_len=70, tokenizer=pretrain_tokenizer, pad_token_label_id=0)
+
+    """
+    Step 2
+        Create example Input
+    """
+    example = _create_examples(input_text, labels)
+
+    """
+    Step 3
+        Create feature Input consist of:
+          + all_input_ids
+          + all_attention_mask
+          + all_slot_labels_ids : default [O] * len(input_text_segmentation)
+    """
+    pretrain_tokenizer = AutoTokenizer.from_pretrained("demdecuong/vihealthbert-base-word")
+    feature = convert_examples_to_features(example, max_seq_len=max_seq_len, tokenizer=pretrain_tokenizer,
+                                           pad_token_label_id=0)
     all_input_ids = torch.tensor([[f for f in feature[0].input_ids]], dtype=torch.long)
     all_attention_mask = torch.tensor([[f for f in feature[0].attention_mask]], dtype=torch.long)
-    all_token_type_ids = torch.tensor([[f for f in feature[0].token_type_ids]], dtype=torch.long)
     all_slot_labels_ids = torch.tensor([[f for f in feature[0].slot_labels_ids]], dtype=torch.long)
     with torch.no_grad():
         inputs = {
@@ -270,22 +286,45 @@ if __name__ == "__main__":
             "slot_labels_ids": all_slot_labels_ids,
         }
 
+    """
+        Step 4: 
+            Config for pretrained model
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--use_crf", action="store_true", help="Whether to use CRF")
+    parser.add_argument("--dropout_rate", default=0.1, type=float, help="Dropout for fully-connected layers")
+    args = parser.parse_args()
+
+    # Using pretrained RobertaConfig for finetuning task
     config = RobertaConfig.from_pretrained('demdecuong/vihealthbert-base-word', finetuning_task='')
 
+    # Load model ViHnBert from path
     model = ViHnBERT.from_pretrained(
-        '/Users/mac/Documents/avp/Text-Mining/vihealthbert-main/code/finetune/ner/data/model-save',
+        '/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/ner/data/model-save',
         config=config,
         args=args,
         slot_label_lst=labels,
     )
     outputs = model(**inputs)
+
+    """
+        Step 5:
+            Get index label predict
+    """
     tmp_eval_loss, (slot_logits) = outputs[:2]
     slot_preds = slot_logits.detach().cpu().numpy()
     slot_preds = np.argmax(slot_preds, axis=2).flatten()
-    padding = 70 - len(input_text.split(" "))
+
+    """
+        Step 5:
+            Remove padding
+    """
+    padding = max_seq_len - len(input_text.split(" "))
     predict_ner = slot_preds[:(len(slot_preds) - padding + 1)]
     index = [0]
     new_predict_ner = np.delete(predict_ner, index)
+
+    # Output Data
     print(f"Raw text: {text}")
     print(new_predict_ner)
     for token, label in zip(input_text.split(" "), new_predict_ner):
