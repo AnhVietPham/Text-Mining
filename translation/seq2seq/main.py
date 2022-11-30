@@ -38,7 +38,6 @@ class Lang:
 # Normalize every sentence
 def normalize_sentence(df, lang):
     sentence = df[lang].str.lower()
-    sentence = sentence.str.replace('[^A-Za-z\s]+', '')
     sentence = sentence.str.normalize('NFD')
     sentence = sentence.str.encode('ascii', errors='ignore').str.decode('utf-8')
     return sentence
@@ -253,5 +252,7 @@ if __name__ == '__main__':
     print("=" * 50)
     print(decoder)
 
-    model = trainModel(model, source, target, pairs, num_iteration)
+    # model = trainModel(model, source, target, pairs, num_iteration)
+    model.load_state_dict(
+        torch.load("/Users/sendo_mac/Documents/avp/Text-Mining/translation/seq2seq/model/avptraning.pt"))
     evaluateRandomly(model, source, target, pairs)
