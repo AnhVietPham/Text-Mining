@@ -1,9 +1,11 @@
-from translation.Decoder import Decoder
+import random
+
 from translation.Encoder import Encoder
-from translation.uitls import *
+from translation.seq2seq import Seq2Seq
+from translation.seq2seqwithtranslation.attndecoder import AttnDecoderRNN
+from translation.uitls import process_data, evaluateRandomly
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     lang1 = 'eng'
     lang2 = 'vie'
     source, target, pairs = process_data(lang1, lang2)
@@ -20,7 +22,7 @@ if __name__ == '__main__':
     num_iteration = 100000
 
     encoder = Encoder(input_size, hidden_size, embed_size, num_layers)
-    decoder = Decoder(out_size, hidden_size, embed_size, num_layers)
+    decoder = AttnDecoderRNN(out_size, hidden_size, embed_size, num_layers)
 
     model = Seq2Seq(encoder, decoder)
     print(encoder)
@@ -28,6 +30,6 @@ if __name__ == '__main__':
     print(decoder)
 
     # model = trainModel(model, source, target, pairs, num_iteration)
-    model.load_state_dict(
-        torch.load("/Users/sendo_mac/Documents/avp/Text-Mining/translation/seq2seq/model/avptraning.pt"))
+    # model.load_state_dict(
+    #     torch.load("/Users/sendo_mac/Documents/avp/Text-Mining/translation/seq2seq/model/avptraning.pt"))
     evaluateRandomly(model, source, target, pairs)

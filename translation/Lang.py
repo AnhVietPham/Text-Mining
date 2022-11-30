@@ -1,17 +1,8 @@
-import torch
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-SOS_TOKEN = 0
-EOS_TOKEN = 1
-
-
 class Lang:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
         self.word2index = {}
         self.word2count = {}
-        self.index2word = {0: "SOS", 1: "EOS"}
+        self.index2word = {0: 'S0S', 1: 'EOS'}
         self.n_words = 2
 
     def addSentence(self, sentence):
