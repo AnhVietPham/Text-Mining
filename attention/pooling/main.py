@@ -4,7 +4,6 @@ from torch import nn
 from torch.nn import functional as F
 import matplotlib.pyplot as plt
 
-
 class NonlinearData(d2l.DataModule):
     def __init__(self, n, batch_size):
         super().__init__()
@@ -20,8 +19,8 @@ class NonlinearData(d2l.DataModule):
         return self.get_tensorloader(arrays, train)
 
 
-n = 100
-data = NonlinearData(n, batch_size=10)
+n = 3
+data = NonlinearData(n, batch_size=3)
 
 
 def plot_kernel_reg(y_hat):
@@ -45,6 +44,7 @@ def attention_pool(query_key_diffs, values):
 class NWKernelRegression(d2l.Module):
     def __init__(self, keys, values, lr):
         super(NWKernelRegression, self).__init__()
+        self.save_hyperparameters()
         self.w = torch.ones(1, requires_grad=True)
 
     def forward(self, queries):
@@ -54,6 +54,7 @@ class NWKernelRegression(d2l.Module):
 
     def loss(self, y_hat, y):
         l = (y_hat.reshape(-1) - y.reshape(-1)) ** 2 / 2
+        return l.mean()
 
     def configure_optimizers(self):
         return d2l.SGD([self.w], self.lr)
@@ -64,3 +65,4 @@ if __name__ == "__main__":
     model.board.display = False
     trainer = d2l.Trainer(max_epochs=5)
     trainer.fit(model, data)
+    plot_kernel_reg(model.forward(data.x_val))
