@@ -19,14 +19,14 @@ class NonlinearData(d2l.DataModule):
         return self.get_tensorloader(arrays, train)
 
 
-n = 3
-data = NonlinearData(n, batch_size=3)
+n = 1000
+data = NonlinearData(n, batch_size=10)
 
 
 def plot_kernel_reg(y_hat):
     d2l.plot(data.x_val, [data.y_val, y_hat.detach().numpy()], 'x', 'y', legend=['Truth', 'Pred'],
              xlim=[0, 5], ylim=[-1, 5])
-    d2l.plt.plot(data.x_train, data.y_train, 'o', alpha=0.5)
+    # d2l.plt.plot(data.x_train, data.y_train, 'o', alpha=0.5)
     plt.show()
 
 
