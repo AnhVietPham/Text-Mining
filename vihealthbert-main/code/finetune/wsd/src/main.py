@@ -51,7 +51,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # parser.add_argument("--task", default=None, required=True, type=str, help="The name of the task to train")
-    # parser.add_argument("--model_dir", default=None, required=True, type=str, help="Path to save, load model")
+    parser.add_argument("--model_dir",
+                        default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/code/finetune/wsd/src/model-save",
+                        type=str, help="Path to save, load model")
     parser.add_argument("--data_dir",
                         default="/Users/anhvietpham/Documents/cs/text-mining/vihealthbert-main/dataset/acrDrAid",
                         type=str, help="The input data dir")
@@ -97,7 +99,7 @@ if __name__ == '__main__':
     parser.add_argument("--logging_steps", type=int, default=200, help="Log every X updates steps.")
     parser.add_argument("--save_steps", type=int, default=200, help="Save checkpoint every X updates steps.")
 
-    parser.add_argument("--do_train", action="store_true", default=True, help="Whether to run training.")
+    parser.add_argument("--do_train", action="store_true", default=False, help="Whether to run training.")
     parser.add_argument("--do_eval", action="store_true", default=True, help="Whether to run eval on the test set.")
 
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
